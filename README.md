@@ -46,7 +46,7 @@ CLU is an AI-powered web application that analyzes Terms of Service, Privacy Pol
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/clu.git
+git clone https://github.com/Tejaswanth2406/clu.git
 cd clu
 
 # 2. Install dependencies
@@ -66,7 +66,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Variable | Required | Description |
 |---|---|---|
-| `VITE_ANTHROPIC_API_KEY` | ✅ | Your Anthropic API key |
+| `VITE_ANTHROPIC_API_KEY` 
 | `VITE_ANTHROPIC_MODEL` | No | Model to use (default: `claude-sonnet-4-20250514`) |
 | `VITE_MAX_TOKENS` | No | Max tokens per analysis (default: `2000`) |
 | `VITE_MAX_DOCUMENT_CHARS` | No | Max input chars (default: `8000`) |
@@ -74,7 +74,6 @@ Open [http://localhost:3000](http://localhost:3000).
 | `VITE_ENABLE_HISTORY` | No | Enable analysis history (default: `true`) |
 | `VITE_ENABLE_EXPORT` | No | Enable export button (default: `true`) |
 
-> ⚠️ **Security note**: The API key is sent directly from the browser to Anthropic's API. This is acceptable for personal/internal tools. For a public-facing deployment, route API calls through a server-side proxy and never expose your key in client-side code.
 
 ---
 
