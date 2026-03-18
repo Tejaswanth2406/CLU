@@ -9,6 +9,12 @@
     "web:build": "npm run build --workspace=@clu/web",
     "api:dev": "npm run dev --workspace=@clu/api",
     "api:build": "npm run build --workspace=@clu/api",
-    "test": "npm run test --workspaces"
+    "build": "npm run build --workspaces",
+    "typecheck": "npm run typecheck --workspace=@clu/web",
+    "lint": "npm run lint --workspace=@clu/web",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "npm run test --workspaces",
+    "test:e2e": "npm run test:e2e --workspace=@clu/web"
   }
 }
