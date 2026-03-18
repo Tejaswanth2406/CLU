@@ -16,20 +16,20 @@ Most people click "I Agree" without reading a word. Legal documents are intentio
 
 ## Features
 
-| | |
-|---|---|
-| **Risk Score (0–100)** | Instant danger rating for any legal document |
+|                              |                                                        |
+| ---------------------------- | ------------------------------------------------------ |
+| **Risk Score (0–100)**       | Instant danger rating for any legal document           |
 | **Severity-tagged findings** | Danger · Warning · Info · Safe — scannable at a glance |
-| **Plain English summaries** | Every clause rewritten in clear, direct language |
-| **Document type detection** | Auto-detects ToS, Privacy Policy, EULA, License |
-| **Streaming responses** | Real-time output as analysis runs — no waiting |
-| **Smart caching** | Redis-backed cache for instant repeat lookups |
-| **Multi-provider AI** | Swap between Claude and GPT via a single env variable |
-| **File upload** | Drop `.txt` or `.md` files directly — no copy-paste |
-| **Analysis history** | Local and private, persisted to your browser |
-| **Export** | Download findings as a formatted text report |
-| **Dark mode** | System-aware with manual override |
-| **Keyboard shortcut** | `⌘ + Enter` to analyze |
+| **Plain English summaries**  | Every clause rewritten in clear, direct language       |
+| **Document type detection**  | Auto-detects ToS, Privacy Policy, EULA, License        |
+| **Streaming responses**      | Real-time output as analysis runs — no waiting         |
+| **Smart caching**            | Redis-backed cache for instant repeat lookups          |
+| **Multi-provider AI**        | Swap between Claude and GPT via a single env variable  |
+| **File upload**              | Drop `.txt` or `.md` files directly — no copy-paste    |
+| **Analysis history**         | Local and private, persisted to your browser           |
+| **Export**                   | Download findings as a formatted text report           |
+| **Dark mode**                | System-aware with manual override                      |
+| **Keyboard shortcut**        | `⌘ + Enter` to analyze                                 |
 
 ---
 
@@ -113,17 +113,17 @@ Only the variables for the active provider are required. The other set is ignore
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 18 + TypeScript, Vite 5 |
-| Styling | Tailwind CSS v3, Framer Motion |
-| State | Zustand |
-| Backend | Express, Zod |
-| Caching | Redis (Upstash / Railway / Redis Cloud) |
-| AI | Anthropic Claude API · OpenAI API (streaming) |
-| Testing | Vitest, Playwright, Supertest |
-| CI/CD | GitHub Actions |
-| Deployment | Vercel (web) · Railway or Render (api) |
+| Layer      | Technology                                    |
+| ---------- | --------------------------------------------- |
+| Frontend   | React 18 + TypeScript, Vite 5                 |
+| Styling    | Tailwind CSS v3, Framer Motion                |
+| State      | Zustand                                       |
+| Backend    | Express, Zod                                  |
+| Caching    | Redis (Upstash / Railway / Redis Cloud)       |
+| AI         | Anthropic Claude API · OpenAI API (streaming) |
+| Testing    | Vitest, Playwright, Supertest                 |
+| CI/CD      | GitHub Actions                                |
+| Deployment | Vercel (web) · Railway or Render (api)        |
 
 ---
 
@@ -203,25 +203,25 @@ API: [http://localhost:3001](http://localhost:3001)
 
 ### Backend (`apps/api/.env`)
 
-| Variable | Required | Default | Description |
-|---|---|---|---|
-| `AI_PROVIDER` | No | `anthropic` | Which provider to use: `anthropic` or `openai` |
-| `ANTHROPIC_API_KEY` | If using Anthropic | — | Your Anthropic API key |
-| `ANTHROPIC_MODEL` | No | `claude-sonnet-4-20250514` | Claude model to use |
-| `OPENAI_API_KEY` | If using OpenAI | — | Your OpenAI API key |
-| `OPENAI_MODEL` | No | `gpt-4o` | GPT model to use |
-| `REDIS_URL` | No | — | Redis connection URL. Caching is disabled if unset |
-| `PORT` | No | `3001` | Port for the API server |
+| Variable            | Required           | Default                    | Description                                        |
+| ------------------- | ------------------ | -------------------------- | -------------------------------------------------- |
+| `AI_PROVIDER`       | No                 | `anthropic`                | Which provider to use: `anthropic` or `openai`     |
+| `ANTHROPIC_API_KEY` | If using Anthropic | —                          | Your Anthropic API key                             |
+| `ANTHROPIC_MODEL`   | No                 | `claude-sonnet-4-20250514` | Claude model to use                                |
+| `OPENAI_API_KEY`    | If using OpenAI    | —                          | Your OpenAI API key                                |
+| `OPENAI_MODEL`      | No                 | `gpt-4o`                   | GPT model to use                                   |
+| `REDIS_URL`         | No                 | —                          | Redis connection URL. Caching is disabled if unset |
+| `PORT`              | No                 | `3001`                     | Port for the API server                            |
 
 ### Frontend (`apps/web/.env.local`)
 
-| Variable | Required | Default | Description |
-|---|---|---|---|
-| `VITE_API_URL` | No | `http://localhost:3001` | Backend API base URL |
-| `VITE_MAX_DOCUMENT_CHARS` | No | `8000` | Max input characters |
-| `VITE_ENABLE_FILE_UPLOAD` | No | `true` | Enable file upload UI |
-| `VITE_ENABLE_HISTORY` | No | `true` | Enable analysis history |
-| `VITE_ENABLE_EXPORT` | No | `true` | Enable export button |
+| Variable                  | Required | Default                 | Description             |
+| ------------------------- | -------- | ----------------------- | ----------------------- |
+| `VITE_API_URL`            | No       | `http://localhost:3001` | Backend API base URL    |
+| `VITE_MAX_DOCUMENT_CHARS` | No       | `8000`                  | Max input characters    |
+| `VITE_ENABLE_FILE_UPLOAD` | No       | `true`                  | Enable file upload UI   |
+| `VITE_ENABLE_HISTORY`     | No       | `true`                  | Enable analysis history |
+| `VITE_ENABLE_EXPORT`      | No       | `true`                  | Enable export button    |
 
 ---
 
@@ -291,11 +291,13 @@ clu/
 Analyzes a document. Returns a cached result instantly if available, otherwise calls the configured AI provider and caches the response.
 
 **Request**
+
 ```json
 { "input": "paste your legal document here..." }
 ```
 
 **Response**
+
 ```json
 {
   "riskScore": 74,
