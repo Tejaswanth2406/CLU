@@ -17,6 +17,9 @@ jobs:
     permissions:
       contents: read
       deployments: write
+    defaults:
+      run:
+        working-directory: ./clu
 
     steps:
       - name: Checkout
@@ -27,6 +30,7 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
+          cache-dependency-path: clu/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -46,14 +50,14 @@ jobs:
       #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
       #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
       #     vercel-args: "--prod"
-      #     working-directory: ./
+      #     working-directory: ./clu
 
       # ─── Option B: Deploy to Netlify ───────────────────────────────────────
       # Uncomment and configure NETLIFY_AUTH_TOKEN, NETLIFY_SITE_ID
       # - name: Deploy to Netlify
       #   uses: nwtgck/actions-netlify@v3
       #   with:
-      #     publish-dir: "./dist"
+      #     publish-dir: "./clu/dist"
       #     production-branch: main
       #     production-deploy: true
       #   env:
@@ -65,5 +69,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./clu/dist
           cname: ""  # Add your custom domain here if applicable
