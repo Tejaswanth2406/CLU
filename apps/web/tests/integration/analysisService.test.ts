@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { analyzeDocument, AnalysisError } from "@/services/analysisService";
+import { analyzeDocument } from "@/services/analysisService";
 
 
 const MOCK_VALID_RESPONSE = {

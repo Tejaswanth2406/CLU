@@ -92,7 +92,7 @@ router.post("/", async (req, res) => {
   } catch (err: any) {
     console.error(err);
     if (err instanceof z.ZodError) {
-      return res.status(400).json({ error: "Invalid input", details: err.errors });
+      return res.status(400).json({ error: "Validation failed", details: err.issues });
     }
     res.status(500).json({ error: "Analysis failed" });
   }

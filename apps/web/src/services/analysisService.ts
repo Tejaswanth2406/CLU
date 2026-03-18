@@ -9,11 +9,6 @@ import type {
   RawFinding,
   Finding,
 } from "@/types";
-import {
-  ANTHROPIC_MODEL,
-  DOCUMENT_TYPE_LABELS,
-  MAX_DOCUMENT_CHARS,
-} from "@/lib/constants";
 import { generateId, getRiskLevel, sortFindingsBySeverity } from "@/lib/utils";
 
 
@@ -28,59 +23,6 @@ export class AnalysisError extends Error {
     super(message);
     this.name = "AnalysisError";
   }
-}
-
-// ─── Prompt builders ─────────────────────────────────────────────────────────
-
-function buildSystemPrompt(): string {
-  return `You are CLU, an expert legal document analyzer. Your job is to analyze legal documents \
-(Terms of Service, Privacy Policies, License Agreements, EULAs) and surface the most important \
-findings that most users would miss. You must respond ONLY in valid JSON — no markdown, \
-no preamble, no explanation outside the JSON object.`;
-}
-
-function buildUserPrompt(text: string, docTypeInput: DocumentTypeInput): string {
-  const docTypeLabel = DOCUMENT_TYPE_LABELS[docTypeInput] ?? "the document";
-  const truncated = text.slice(0, MAX_DOCUMENT_CHARS);
-
-  return `Analyze ${docTypeLabel} below and return a JSON object with EXACTLY this shape:
-
-{
-  "docType": "detected document type string",
-  "riskScore": <integer 0-100>,
-  "riskLevel": "low" | "medium" | "high",
-  "summary": "2-3 sentence plain English summary",
-  "dangerCount": <integer>,
-  "warningCount": <integer>,
-  "infoCount": <integer>,
-  "goodCount": <integer>,
-  "findings": [
-    {
-      "title": "finding title (max 8 words)",
-      "severity": "danger" | "warning" | "info" | "good",
-      "icon": "single emoji",
-      "tag": "category label (e.g. Data Privacy, Arbitration, IP Rights)",
-      "explanation": "2-3 sentence plain English explanation of what this means for the user",
-      "quote": "short verbatim or paraphrased excerpt from the document (max 60 words)"
-    }
-  ]
-}
-
-Rules:
-- findings array: 5 to 10 items, sorted by severity (danger first)
-- severity "danger": removes user rights, allows data selling, unlimited liability, forced arbitration, auto-renewal traps, unilateral changes
-- severity "warning": notable restrictions, vague terms, data sharing, third-party disclosures
-- severity "info": important neutral facts users should know
-- severity "good": user-friendly clauses (refund rights, clear cancellation, data deletion)
-- riskScore must match riskLevel: 0-33 = low, 34-66 = medium, 67-100 = high
-- counts must match the actual findings array contents
-- Be specific and actionable — avoid vague legal paraphrasing
-- If the text is not a legal document, return riskScore 0, riskLevel "low", and one finding explaining the issue
-
-Document:
----
-${truncated}
----`;
 }
 
 // ─── Response parser ──────────────────────────────────────────────────────────
