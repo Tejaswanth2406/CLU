@@ -142,9 +142,13 @@ export async function streamAnalysis(
     throw new AnalysisError("Failed to read stream", "STREAM_ERROR", true);
   }
 
-  while (true) {
+  let isReading = true;
+  while (isReading) {
     const { done, value } = await reader.read();
-    if (done) break;
+    if (done) {
+      isReading = false;
+      break;
+    }
 
     const chunk = decoder.decode(value);
     onChunk(chunk);
