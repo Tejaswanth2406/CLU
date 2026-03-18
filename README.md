@@ -22,16 +22,16 @@ CLU is an AI-powered web application that analyzes Terms of Service, Privacy Pol
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
+| Layer     | Technology            |
+| --------- | --------------------- |
 | Framework | React 18 + TypeScript |
-| Build | Vite 5 |
-| Styling | Tailwind CSS v3 |
-| State | Zustand |
-| Animation | Framer Motion |
-| AI | Anthropic Claude API |
-| Testing | Vitest + Playwright |
-| CI/CD | GitHub Actions |
+| Build     | Vite 5                |
+| Styling   | Tailwind CSS v3       |
+| State     | Zustand               |
+| Animation | Framer Motion         |
+| AI        | Anthropic Claude API  |
+| Testing   | Vitest + Playwright   |
+| CI/CD     | GitHub Actions        |
 
 ---
 
@@ -65,15 +65,15 @@ Open [http://localhost:3000](http://localhost:3000).
 ### Environment Variables
 
 | Variable | Required | Description |
-|---|---|---|
-| `VITE_ANTHROPIC_API_KEY` 
+| -------- | -------- | ----------- |
+
+| `VITE_ANTHROPIC_API_KEY`
 | `VITE_ANTHROPIC_MODEL` | No | Model to use (default: `claude-sonnet-4-20250514`) |
 | `VITE_MAX_TOKENS` | No | Max tokens per analysis (default: `2000`) |
 | `VITE_MAX_DOCUMENT_CHARS` | No | Max input chars (default: `8000`) |
 | `VITE_ENABLE_FILE_UPLOAD` | No | Enable file upload UI (default: `true`) |
 | `VITE_ENABLE_HISTORY` | No | Enable analysis history (default: `true`) |
 | `VITE_ENABLE_EXPORT` | No | Enable export button (default: `true`) |
-
 
 ---
 
@@ -172,14 +172,17 @@ npm run test:e2e     # Playwright end-to-end tests
 ## Deployment
 
 ### GitHub Pages (default — included in CI)
+
 Pushes to `main` auto-deploy via `deploy.yml`. Set `VITE_ANTHROPIC_API_KEY` in your repo's **Settings → Secrets → Actions**.
 
 ### Vercel
+
 1. Connect your repo to Vercel
 2. Set `VITE_ANTHROPIC_API_KEY` in Vercel environment variables
 3. Vercel auto-detects Vite — no extra config needed
 
 ### Netlify
+
 1. Connect your repo to Netlify
 2. Build command: `npm run build`, publish directory: `dist`
 3. Add `VITE_ANTHROPIC_API_KEY` in Site settings → Environment variables

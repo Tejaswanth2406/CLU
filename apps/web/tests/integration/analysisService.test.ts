@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { analyzeDocument } from "@/services/analysisService";
 
-
 const MOCK_VALID_RESPONSE = {
   docType: "Terms of Service",
   riskScore: 75,
   riskLevel: "high",
-  summary: "This Terms of Service allows broad data collection and limits your rights significantly.",
+  summary:
+    "This Terms of Service allows broad data collection and limits your rights significantly.",
   dangerCount: 3,
   warningCount: 2,
   infoCount: 1,
@@ -17,7 +17,8 @@ const MOCK_VALID_RESPONSE = {
       severity: "danger",
       icon: "🔴",
       tag: "Data Privacy",
-      explanation: "The company can sell your personal data to any third party without further notice.",
+      explanation:
+        "The company can sell your personal data to any third party without further notice.",
       quote: "We may share your information with third-party partners for commercial purposes.",
     },
     {
@@ -77,10 +78,7 @@ describe("analyzeDocument", () => {
   it("returns a valid AnalysisResult on success", async () => {
     vi.stubGlobal("fetch", mockFetch(MOCK_VALID_RESPONSE));
 
-    const result = await analyzeDocument(
-      "By using our service you agree to our terms...",
-      "tos"
-    );
+    const result = await analyzeDocument("By using our service you agree to our terms...", "tos");
 
     expect(result).toMatchObject({
       docType: "Terms of Service",

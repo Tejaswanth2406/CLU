@@ -61,14 +61,7 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       reportsDirectory: "./coverage",
-      exclude: [
-        "node_modules/",
-        "src/tests/",
-        "src/types/",
-        "tests/e2e/",
-        "*.config.ts",
-        "dist/",
-      ],
+      exclude: ["node_modules/", "src/tests/", "src/types/", "tests/e2e/", "*.config.ts", "dist/"],
       thresholds: {
         lines: 80,
         functions: 80,

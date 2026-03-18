@@ -123,8 +123,8 @@ router.post("/stream", async (req, res) => {
     });
 
     if (!response.ok) {
-       res.write(`data: ERROR ${response.status}\n\n`);
-       return res.end();
+      res.write(`data: ERROR ${response.status}\n\n`);
+      return res.end();
     }
 
     const reader = response.body!.getReader();

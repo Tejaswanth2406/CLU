@@ -11,7 +11,6 @@ import type {
 } from "@/types";
 import { generateId, getRiskLevel, sortFindingsBySeverity } from "@/lib/utils";
 
-
 // ─── Errors ───────────────────────────────────────────────────────────────────
 
 export class AnalysisError extends Error {
@@ -86,7 +85,11 @@ export async function analyzeDocument(
       throw new AnalysisError("Invalid API key configured on server.", "AUTH_ERROR", false);
     }
     if (status === 429) {
-      throw new AnalysisError("Rate limit reached on server. Please wait a moment.", "RATE_LIMIT", true);
+      throw new AnalysisError(
+        "Rate limit reached on server. Please wait a moment.",
+        "RATE_LIMIT",
+        true
+      );
     }
     if (status >= 500) {
       throw new AnalysisError("CLU Backend is temporarily unavailable.", "SERVER_ERROR", true);

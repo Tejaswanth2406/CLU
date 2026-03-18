@@ -61,9 +61,9 @@ export const useAppStore = create<AppState>()(
           await streamAnalysis(inputText, (chunk) => {
             set((state) => ({ streamingText: state.streamingText + chunk }));
           });
-          // Note: After streaming, the user usually wants the full structured result. 
+          // Note: After streaming, the user usually wants the full structured result.
           // For now, we'll just show the stream. In a real app we'd trigger a final parse.
-          set({ view: "results" }); 
+          set({ view: "results" });
         } catch (err) {
           set({ view: "error", error: { message: "Streaming failed", retryable: true } });
         }
