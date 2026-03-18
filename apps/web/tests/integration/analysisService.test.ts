@@ -1,7 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { analyzeDocument, AnalysisError } from "@/services/analysisService";
 
-const MOCK_API_KEY = "sk-ant-test-key";
 
 const MOCK_VALID_RESPONSE = {
   docType: "Terms of Service",
@@ -71,13 +70,16 @@ describe("analyzeDocument", () => {
     vi.resetAllMocks();
   });
 
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("returns a valid AnalysisResult on success", async () => {
-    global.fetch = mockFetch(MOCK_VALID_RESPONSE);
+    vi.stubGlobal("fetch", mockFetch(MOCK_VALID_RESPONSE));
 
     const result = await analyzeDocument(
       "By using our service you agree to our terms...",
-      "tos",
-      MOCK_API_KEY
+      "tos"
     );
 
     expect(result).toMatchObject({
@@ -91,62 +93,65 @@ describe("analyzeDocument", () => {
   });
 
   it("sorts findings by severity (danger first)", async () => {
-    global.fetch = mockFetch(MOCK_VALID_RESPONSE);
+    vi.stubGlobal("fetch", mockFetch(MOCK_VALID_RESPONSE));
 
-    const result = await analyzeDocument("text", "auto", MOCK_API_KEY);
+    const result = await analyzeDocument("text", "auto");
     expect(result.findings[0].severity).toBe("danger");
   });
 
   it("clamps riskScore to 0-100", async () => {
-    global.fetch = mockFetch({ ...MOCK_VALID_RESPONSE, riskScore: 150 });
-    const result = await analyzeDocument("text", "auto", MOCK_API_KEY);
+    vi.stubGlobal("fetch", mockFetch({ ...MOCK_VALID_RESPONSE, riskScore: 150 }));
+    const result = await analyzeDocument("text", "auto");
     expect(result.riskScore).toBeLessThanOrEqual(100);
   });
 
   it("throws AnalysisError with AUTH_ERROR on 401", async () => {
-    global.fetch = mockFetch({}, 401);
-    await expect(analyzeDocument("text", "auto", MOCK_API_KEY)).rejects.toMatchObject({
+    vi.stubGlobal("fetch", mockFetch({}, 401));
+    await expect(analyzeDocument("text", "auto")).rejects.toMatchObject({
       code: "AUTH_ERROR",
       retryable: false,
     });
   });
 
   it("throws AnalysisError with RATE_LIMIT on 429", async () => {
-    global.fetch = mockFetch({}, 429);
-    await expect(analyzeDocument("text", "auto", MOCK_API_KEY)).rejects.toMatchObject({
+    vi.stubGlobal("fetch", mockFetch({}, 429));
+    await expect(analyzeDocument("text", "auto")).rejects.toMatchObject({
       code: "RATE_LIMIT",
       retryable: true,
     });
   });
 
   it("throws AnalysisError with SERVER_ERROR on 500", async () => {
-    global.fetch = mockFetch({}, 500);
-    await expect(analyzeDocument("text", "auto", MOCK_API_KEY)).rejects.toMatchObject({
+    vi.stubGlobal("fetch", mockFetch({}, 500));
+    await expect(analyzeDocument("text", "auto")).rejects.toMatchObject({
       code: "SERVER_ERROR",
     });
   });
 
   it("throws PARSE_ERROR when response is not valid JSON", async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: async () => ({ content: [{ text: "not valid json {{" }] }),
-    });
-    await expect(analyzeDocument("text", "auto", MOCK_API_KEY)).rejects.toMatchObject({
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ content: [{ text: "not valid json {{" }] }),
+      })
+    );
+    await expect(analyzeDocument("text", "auto")).rejects.toMatchObject({
       code: "PARSE_ERROR",
     });
   });
 
   it("throws VALIDATION_ERROR when findings array is empty", async () => {
-    global.fetch = mockFetch({ ...MOCK_VALID_RESPONSE, findings: [] });
-    await expect(analyzeDocument("text", "auto", MOCK_API_KEY)).rejects.toMatchObject({
+    vi.stubGlobal("fetch", mockFetch({ ...MOCK_VALID_RESPONSE, findings: [] }));
+    await expect(analyzeDocument("text", "auto")).rejects.toMatchObject({
       code: "VALIDATION_ERROR",
     });
   });
 
   it("attaches correct finding counts", async () => {
-    global.fetch = mockFetch(MOCK_VALID_RESPONSE);
-    const result = await analyzeDocument("text", "auto", MOCK_API_KEY);
+    vi.stubGlobal("fetch", mockFetch(MOCK_VALID_RESPONSE));
+    const result = await analyzeDocument("text", "auto");
     expect(result.dangerCount).toBe(2);
     expect(result.warningCount).toBe(2);
     expect(result.infoCount).toBe(1);

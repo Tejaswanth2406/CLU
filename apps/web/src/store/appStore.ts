@@ -5,7 +5,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import type { AnalysisResult, AppError, AppView, DocumentTypeInput, HistoryEntry } from "@/types";
-import { analyzeDocument } from "@/services/analysisService";
+import { analyzeDocument, streamAnalysis } from "@/services/analysisService";
 import { historyService } from "@/services/historyService";
 import { FEATURE_FLAGS } from "@/lib/constants";
 
@@ -19,6 +19,7 @@ interface AppState {
 
   // ─── Results ─────────────────────────────────────────────
   result: AnalysisResult | null;
+  streamingText: string;
 
   // ─── Error ───────────────────────────────────────────────
   error: AppError | null;
@@ -30,6 +31,7 @@ interface AppState {
   setInputText: (text: string) => void;
   setDocTypeInput: (type: DocumentTypeInput) => void;
   analyze: () => Promise<void>;
+  streamAnalyze: () => Promise<void>;
   reset: () => void;
   loadFromHistory: (entry: HistoryEntry) => void;
   removeFromHistory: (id: string) => void;
@@ -43,6 +45,7 @@ export const useAppStore = create<AppState>()(
       inputText: "",
       docTypeInput: "auto",
       result: null,
+      streamingText: "",
       error: null,
       history: historyService.getAll(),
 
@@ -50,15 +53,42 @@ export const useAppStore = create<AppState>()(
 
       setDocTypeInput: (type) => set({ docTypeInput: type }),
 
-      analyze: async () => {
-        const { inputText, docTypeInput } = get();
-        const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY ?? "";
-
-        set({ view: "loading", error: null });
+      streamAnalyze: async () => {
+        const { inputText } = get();
+        set({ view: "loading", error: null, streamingText: "" });
 
         try {
-          const result = await analyzeDocument(inputText, docTypeInput, apiKey);
-          set({ result, view: "results" });
+          await streamAnalysis(inputText, (chunk) => {
+            set((state) => ({ streamingText: state.streamingText + chunk }));
+          });
+          // Note: After streaming, the user usually wants the full structured result. 
+          // For now, we'll just show the stream. In a real app we'd trigger a final parse.
+          set({ view: "results" }); 
+        } catch (err) {
+          set({ view: "error", error: { message: "Streaming failed", retryable: true } });
+        }
+      },
+
+      analyze: async () => {
+        const { inputText, docTypeInput } = get();
+
+        set({ view: "loading", error: null, streamingText: "" });
+
+        try {
+          // 1. Start Streaming (for UX)
+          try {
+            await streamAnalysis(inputText, (chunk) => {
+              // Anthropic stream chunks are often JSON fragments or delta objects.
+              // For a simple demo, we'll just show the raw output or a simplified version.
+              set((state) => ({ streamingText: state.streamingText + chunk }));
+            });
+          } catch (streamErr) {
+            console.warn("Streaming failed, falling back to standard analysis", streamErr);
+          }
+
+          // 2. Get Final Structured Result (will be a cache hit if streaming finished)
+          const result = await analyzeDocument(inputText, docTypeInput);
+          set({ result, view: "results", streamingText: "" });
 
           if (FEATURE_FLAGS.enableHistory) {
             const entry = historyService.add(result);

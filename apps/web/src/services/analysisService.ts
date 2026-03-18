@@ -13,11 +13,9 @@ import {
   ANTHROPIC_MODEL,
   DOCUMENT_TYPE_LABELS,
   MAX_DOCUMENT_CHARS,
-  MAX_TOKENS,
 } from "@/lib/constants";
 import { generateId, getRiskLevel, sortFindingsBySeverity } from "@/lib/utils";
 
-const API_URL = "https://api.anthropic.com/v1/messages";
 
 // ─── Errors ───────────────────────────────────────────────────────────────────
 
@@ -115,7 +113,7 @@ function normalizeFindings(raw: RawFinding[]): Finding[] {
 }
 
 function validateResponse(data: RawAnalysisResponse): void {
-  if (typeof data.riskScore !== "number" || data.riskScore < 0 || data.riskScore > 100) {
+  if (typeof data.riskScore !== "number") {
     throw new AnalysisError("Invalid risk score in response.", "VALIDATION_ERROR", true);
   }
   if (!Array.isArray(data.findings) || data.findings.length === 0) {
@@ -127,35 +125,29 @@ function validateResponse(data: RawAnalysisResponse): void {
 
 export async function analyzeDocument(
   text: string,
-  docTypeInput: DocumentTypeInput,
-  apiKey: string
+  docTypeInput: DocumentTypeInput
 ): Promise<AnalysisResult> {
-  const response = await fetch(API_URL, {
+  const response = await fetch("http://localhost:3001/api/analyze", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true",
     },
     body: JSON.stringify({
-      model: ANTHROPIC_MODEL,
-      max_tokens: MAX_TOKENS,
-      system: buildSystemPrompt(),
-      messages: [{ role: "user", content: buildUserPrompt(text, docTypeInput) }],
+      input: text,
+      docType: docTypeInput,
     }),
   });
 
   if (!response.ok) {
     const status = response.status;
     if (status === 401) {
-      throw new AnalysisError("Invalid API key. Check your .env.local file.", "AUTH_ERROR", false);
+      throw new AnalysisError("Invalid API key configured on server.", "AUTH_ERROR", false);
     }
     if (status === 429) {
-      throw new AnalysisError("Rate limit reached. Please wait a moment.", "RATE_LIMIT", true);
+      throw new AnalysisError("Rate limit reached on server. Please wait a moment.", "RATE_LIMIT", true);
     }
     if (status >= 500) {
-      throw new AnalysisError("Anthropic API is temporarily unavailable.", "SERVER_ERROR", true);
+      throw new AnalysisError("CLU Backend is temporarily unavailable.", "SERVER_ERROR", true);
     }
     throw new AnalysisError(`Unexpected error (HTTP ${status}).`, "HTTP_ERROR", true);
   }
@@ -183,4 +175,36 @@ export async function analyzeDocument(
     documentPreview: text.slice(0, 200),
     inputLength: text.length,
   };
+}
+
+export async function streamAnalysis(
+  input: string,
+  onChunk: (chunk: string) => void
+): Promise<void> {
+  const response = await fetch("http://localhost:3001/api/analyze/stream", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ input }),
+  });
+
+  if (!response.ok) {
+    throw new AnalysisError("Streaming failed", "STREAM_ERROR", true);
+  }
+
+  const reader = response.body?.getReader();
+  const decoder = new TextDecoder();
+
+  if (!reader) {
+    throw new AnalysisError("Failed to read stream", "STREAM_ERROR", true);
+  }
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    const chunk = decoder.decode(value);
+    onChunk(chunk);
+  }
 }
