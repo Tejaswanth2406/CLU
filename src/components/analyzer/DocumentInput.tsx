@@ -42,7 +42,13 @@ export function DocumentInput() {
     noClick: false,
   });
 
-  useKeyboard("Enter", () => { if (canAnalyze) analyze(); }, [canAnalyze, analyze]);
+  useKeyboard(
+    "Enter",
+    () => {
+      if (canAnalyze) analyze();
+    },
+    [canAnalyze, analyze]
+  );
 
   return (
     <motion.div

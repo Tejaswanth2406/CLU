@@ -1,4 +1,4 @@
-import { Sun, Moon, Monitor, History } from "lucide-react";
+import { Sun, Moon, History } from "lucide-react";
 import { useTheme } from "@/hooks";
 import { useAppStore } from "@/store/appStore";
 import { Button } from "@/components/ui/Button";
@@ -49,11 +49,13 @@ export function Header({ onHistoryClick }: HeaderProps) {
             >
               <span className="hidden sm:inline">History</span>
               {history.length > 0 && (
-                <span className={cn(
-                  "absolute -top-1 -right-1 w-4 h-4 rounded-full text-[10px] font-medium",
-                  "bg-gray-900 dark:bg-white text-white dark:text-gray-900",
-                  "flex items-center justify-center"
-                )}>
+                <span
+                  className={cn(
+                    "absolute -top-1 -right-1 w-4 h-4 rounded-full text-[10px] font-medium",
+                    "bg-gray-900 dark:bg-white text-white dark:text-gray-900",
+                    "flex items-center justify-center"
+                  )}
+                >
                   {Math.min(history.length, 9)}
                 </span>
               )}

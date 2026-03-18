@@ -6,12 +6,9 @@ export const APP_NAME = "CLU";
 export const APP_VERSION = import.meta.env.VITE_APP_VERSION ?? "1.0.0";
 
 // ─── Model ────────────────────────────────────────────────────────────────────
-export const ANTHROPIC_MODEL =
-  import.meta.env.VITE_ANTHROPIC_MODEL ?? "claude-sonnet-4-20250514";
+export const ANTHROPIC_MODEL = import.meta.env.VITE_ANTHROPIC_MODEL ?? "claude-sonnet-4-20250514";
 export const MAX_TOKENS = Number(import.meta.env.VITE_MAX_TOKENS ?? 2000);
-export const MAX_DOCUMENT_CHARS = Number(
-  import.meta.env.VITE_MAX_DOCUMENT_CHARS ?? 8000
-);
+export const MAX_DOCUMENT_CHARS = Number(import.meta.env.VITE_MAX_DOCUMENT_CHARS ?? 8000);
 export const MIN_DOCUMENT_CHARS = 50;
 
 // ─── Feature Flags ───────────────────────────────────────────────────────────

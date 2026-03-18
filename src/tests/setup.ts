@@ -6,16 +6,27 @@ const localStorageMock = (() => {
   let store: Record<string, string> = {};
   return {
     getItem: (key: string) => store[key] ?? null,
-    setItem: (key: string, value: string) => { store[key] = value; },
-    removeItem: (key: string) => { delete store[key]; },
-    clear: () => { store = {}; },
+    setItem: (key: string, value: string) => {
+      store[key] = value;
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    },
   };
 })();
 Object.defineProperty(window, "localStorage", { value: localStorageMock });
 
 // Mock crypto.getRandomValues
 Object.defineProperty(globalThis, "crypto", {
-  value: { getRandomValues: (arr: Uint8Array) => { arr.fill(1); return arr; } },
+  value: {
+    getRandomValues: (arr: Uint8Array) => {
+      arr.fill(1);
+      return arr;
+    },
+  },
 });
 
 // Mock matchMedia

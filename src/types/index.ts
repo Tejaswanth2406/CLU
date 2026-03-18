@@ -13,12 +13,7 @@ export type DocumentType =
   | "Data Processing Agreement"
   | "Unknown";
 
-export type DocumentTypeInput =
-  | "auto"
-  | "tos"
-  | "privacy"
-  | "license"
-  | "eula";
+export type DocumentTypeInput = "auto" | "tos" | "privacy" | "license" | "eula";
 
 // ─── Finding ──────────────────────────────────────────────────────────────────
 

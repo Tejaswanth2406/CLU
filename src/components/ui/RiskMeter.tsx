@@ -33,7 +33,10 @@ export function RiskMeter({ score, level, description }: RiskMeterProps) {
     <div className={cn("rounded-xl p-4 flex items-center gap-4", config.bg)}>
       <div className="flex-shrink-0 text-center min-w-[64px]">
         <motion.div
-          className={cn("text-4xl font-semibold tabular-nums leading-none tracking-tight", config.color)}
+          className={cn(
+            "text-4xl font-semibold tabular-nums leading-none tracking-tight",
+            config.color
+          )}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}

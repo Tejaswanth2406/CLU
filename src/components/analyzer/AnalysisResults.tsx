@@ -58,8 +58,8 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
             Analysis complete
           </h2>
           <p className="text-xs text-gray-400 mt-0.5">
-            {result.docType} · {result.inputLength.toLocaleString()} chars ·{" "}
-            ~{estimateReadTime(result.documentPreview)} min read
+            {result.docType} · {result.inputLength.toLocaleString()} chars · ~
+            {estimateReadTime(result.documentPreview)} min read
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -73,12 +73,7 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
               Export
             </Button>
           )}
-          <Button
-            variant="ghost"
-            size="sm"
-            leftIcon={<RotateCcw size={14} />}
-            onClick={reset}
-          >
+          <Button variant="ghost" size="sm" leftIcon={<RotateCcw size={14} />} onClick={reset}>
             New
           </Button>
         </div>
@@ -110,9 +105,7 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
         <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
           Plain English Summary
         </h3>
-        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-          {result.summary}
-        </p>
+        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{result.summary}</p>
       </div>
 
       <Button variant="secondary" size="md" className="w-full" onClick={reset}>

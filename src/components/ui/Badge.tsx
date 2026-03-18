@@ -19,7 +19,9 @@ export function Badge({ children, severity, className }: BadgeProps) {
     <span
       className={cn(
         "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-        severity ? severityClasses[severity] : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400",
+        severity
+          ? severityClasses[severity]
+          : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400",
         className
       )}
     >

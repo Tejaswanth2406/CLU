@@ -40,12 +40,8 @@ export function getSeverityOrder(severity: Severity): number {
   return order[severity];
 }
 
-export function sortFindingsBySeverity<T extends { severity: Severity }>(
-  findings: T[]
-): T[] {
-  return [...findings].sort(
-    (a, b) => getSeverityOrder(a.severity) - getSeverityOrder(b.severity)
-  );
+export function sortFindingsBySeverity<T extends { severity: Severity }>(findings: T[]): T[] {
+  return [...findings].sort((a, b) => getSeverityOrder(a.severity) - getSeverityOrder(b.severity));
 }
 
 // ─── Text utilities ───────────────────────────────────────────────────────────

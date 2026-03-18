@@ -28,7 +28,15 @@ function HistoryItem({
           <span className="text-xs font-medium text-gray-700 dark:text-gray-300 truncate">
             {result.docType}
           </span>
-          <Badge severity={result.riskLevel === "low" ? "good" : result.riskLevel === "medium" ? "warning" : "danger"}>
+          <Badge
+            severity={
+              result.riskLevel === "low"
+                ? "good"
+                : result.riskLevel === "medium"
+                  ? "warning"
+                  : "danger"
+            }
+          >
             {result.riskScore}
           </Badge>
         </div>
@@ -95,7 +103,10 @@ export function HistoryPanel({ open, onClose }: HistoryPanelProps) {
                   <HistoryItem
                     key={entry.id}
                     entry={entry}
-                    onLoad={() => { loadFromHistory(entry); onClose(); }}
+                    onLoad={() => {
+                      loadFromHistory(entry);
+                      onClose();
+                    }}
                     onDelete={() => removeFromHistory(entry.id)}
                   />
                 ))

@@ -17,7 +17,8 @@ export default function App() {
       <Toaster
         position="top-right"
         toastOptions={{
-          className: "!bg-white dark:!bg-gray-900 !text-gray-900 dark:!text-gray-100 !border !border-gray-200 dark:!border-gray-700 !shadow-sm !rounded-xl",
+          className:
+            "!bg-white dark:!bg-gray-900 !text-gray-900 dark:!text-gray-100 !border !border-gray-200 dark:!border-gray-700 !shadow-sm !rounded-xl",
         }}
       />
 
@@ -34,8 +35,8 @@ export default function App() {
                 Read the fine print
               </h1>
               <p className="text-gray-500 dark:text-gray-400 text-base max-w-md mx-auto">
-                Paste any Terms of Service, Privacy Policy, or License Agreement.
-                CLU surfaces what matters — before you click "I Agree."
+                Paste any Terms of Service, Privacy Policy, or License Agreement. CLU surfaces what
+                matters — before you click "I Agree."
               </p>
             </div>
           )}

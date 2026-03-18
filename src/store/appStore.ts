@@ -4,13 +4,7 @@
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import type {
-  AnalysisResult,
-  AppError,
-  AppView,
-  DocumentTypeInput,
-  HistoryEntry,
-} from "@/types";
+import type { AnalysisResult, AppError, AppView, DocumentTypeInput, HistoryEntry } from "@/types";
 import { analyzeDocument } from "@/services/analysisService";
 import { historyService } from "@/services/historyService";
 import { FEATURE_FLAGS } from "@/lib/constants";

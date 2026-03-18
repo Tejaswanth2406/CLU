@@ -25,9 +25,7 @@ export function ErrorState({ error }: ErrorStateProps) {
         <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
           Analysis failed
         </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm">
-          {error.message}
-        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm">{error.message}</p>
       </div>
 
       <div className="flex gap-2">
