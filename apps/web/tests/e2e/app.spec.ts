@@ -23,7 +23,7 @@ test.describe("CLU — End-to-End", () => {
 
   test("renders the home page correctly", async ({ page }) => {
     await expect(page.getByText("Read the fine print")).toBeVisible();
-    await expect(page.getByText("CLU")).toBeVisible();
+    await expect(page.getByText("CLU", { exact: true }).first()).toBeVisible();
     await expect(page.getByPlaceholder(/paste/i)).toBeVisible();
   });
 
